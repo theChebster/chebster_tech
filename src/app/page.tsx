@@ -124,33 +124,35 @@ export default function HomePage() {
     }
   };
 
-  // EMAIL SENDING FUNCTION WITH ENHANCED LOGGING
+  // EMAIL SENDING FUNCTION
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
 
     if (!formRef.current) return;
 
-    // Log check for Debugging
-    console.log("--- EmailJS Debug Log ---");
-    console.log("Service ID: service_4p7znoi");
-    console.log("Template ID loaded:", process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ? "✅" : "❌ (Check Vercel Settings)");
-    console.log("Public Key loaded:", process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ? "✅" : "❌ (Check Vercel Settings)");
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!templateId || !publicKey) {
+      console.error("EmailJS credentials missing from Environment Variables");
+      setStatus("error");
+      return;
+    }
 
     emailjs.sendForm(
       "service_4p7znoi", 
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, 
+      templateId, 
       formRef.current,
-      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+      publicKey
     )
     .then((result) => {
-      console.log("Email Result:", result.text);
       setStatus("success");
       formRef.current?.reset();
       setTimeout(() => setStatus(""), 5000);
     })
     .catch((error) => {
-      console.error("Email Error Details:", error);
+      console.error("Email Error:", error);
       setStatus("error");
       setTimeout(() => setStatus(""), 5000);
     });
@@ -385,7 +387,7 @@ export default function HomePage() {
           </div>
         </div>
         
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-10 border-t border-gray-800 flex flex-col md:row items-center justify-between space-y-4 md:space-y-0 text-xs">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-10 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 text-xs">
           <p>© 2026 Chebster Tech. All rights reserved.</p>
           <p className="uppercase tracking-[0.3em] font-black text-gray-700">Integrity • Innovation • Excellence</p>
         </div>
