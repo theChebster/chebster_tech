@@ -126,22 +126,33 @@ export default function HomePage() {
 
   // --- UPDATED EMAIL SENDING FUNCTION ---
   const sendEmail = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
+  e.preventDefault();
+  setStatus("sending");
 
-    if (!formRef.current) return;
+  if (!formRef.current) return;
 
-    // This pulls the values from your .env.local file or Vercel settings
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    // Safety check to make sure variables are loading
-    if (!serviceId || !templateId || !publicKey) {
-      console.error("Environment variables are missing!");
+  // This will tell us in the console if the variables are missing
+  if (!serviceId || !templateId || !publicKey) {
+    console.error("Missing Env Vars:", { serviceId, templateId, publicKey });
+    setStatus("error");
+    return;
+  }
+
+  emailjs.sendForm(serviceId, templateId, formRef.current, publicKey)
+    .then(() => {
+      setStatus("success");
+      formRef.current?.reset();
+      setTimeout(() => setStatus(""), 5000);
+    })
+    .catch((error) => {
+      console.error("EmailJS Error:", error);
       setStatus("error");
-      return;
-    }
+    });
+};
 
     emailjs.sendForm(serviceId, templateId, formRef.current, publicKey)
       .then(() => {
