@@ -5,14 +5,26 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chebster Tech",
-  description: "Innovative Tech Solutions",
+  title: "Chebster Tech | Innovative Tech Solutions",
+  description: "Empowering businesses with cutting-edge technology. From enterprise web development to secure mobile architectures.",
+  metadataBase: new URL("https://chebstertech.vercel.app"), // Replace with your actual domain
+  icons: {
+    icon: "/logo.png", // This makes your company logo the icon in the browser tab
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className="scroll-smooth">
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
   );
 }
