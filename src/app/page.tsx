@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect, useRef } from "react"; // Added useRef
-import emailjs from '@emailjs/browser'; // Ensure you've run: npm install @emailjs/browser
+import { useState, useEffect, useRef } from "react";
+import emailjs from '@emailjs/browser';
 import {
   Menu,
   X,
@@ -124,26 +124,33 @@ export default function HomePage() {
     }
   };
 
-  // EMAIL SENDING FUNCTION
+  // EMAIL SENDING FUNCTION WITH ENHANCED LOGGING
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
 
     if (!formRef.current) return;
 
+    // Log check for Debugging
+    console.log("--- EmailJS Debug Log ---");
+    console.log("Service ID: service_4p7znoi");
+    console.log("Template ID loaded:", process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ? "✅" : "❌ (Check Vercel Settings)");
+    console.log("Public Key loaded:", process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ? "✅" : "❌ (Check Vercel Settings)");
+
     emailjs.sendForm(
-      "service_4p7znoi", // Your Service ID
+      "service_4p7znoi", 
       process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, 
       formRef.current,
       process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
     )
-    .then(() => {
+    .then((result) => {
+      console.log("Email Result:", result.text);
       setStatus("success");
       formRef.current?.reset();
       setTimeout(() => setStatus(""), 5000);
     })
     .catch((error) => {
-      console.error("Email Error:", error);
+      console.error("Email Error Details:", error);
       setStatus("error");
       setTimeout(() => setStatus(""), 5000);
     });
@@ -339,7 +346,7 @@ export default function HomePage() {
                 <p className="text-green-500 text-center font-bold mt-4 animate-bounce">✅ Message Sent Successfully!</p>
               )}
               {status === "error" && (
-                <p className="text-red-500 text-center font-bold mt-4">❌ Error. Please try again.</p>
+                <p className="text-red-500 text-center font-bold mt-4">❌ Error. Please check browser console.</p>
               )}
             </form>
           </div>
