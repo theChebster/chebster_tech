@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Added useRef
+import emailjs from '@emailjs/browser'; // Ensure you've run: npm install @emailjs/browser
 import {
   Menu,
   X,
@@ -98,6 +99,10 @@ function ServiceCard({ Icon, title, desc }: ServiceCardProps) {
 export default function HomePage() {
   const [darkMode, setDarkMode] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // EMAIL SETTINGS STATE
+  const formRef = useRef<HTMLFormElement>(null);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -117,6 +122,31 @@ export default function HomePage() {
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
       setIsMenuOpen(false);
     }
+  };
+
+  // EMAIL SENDING FUNCTION
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    if (!formRef.current) return;
+
+    emailjs.sendForm(
+      "service_4p7znoi", // Your Service ID
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, 
+      formRef.current,
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+    )
+    .then(() => {
+      setStatus("success");
+      formRef.current?.reset();
+      setTimeout(() => setStatus(""), 5000);
+    })
+    .catch((error) => {
+      console.error("Email Error:", error);
+      setStatus("error");
+      setTimeout(() => setStatus(""), 5000);
+    });
   };
 
   return (
@@ -293,16 +323,24 @@ export default function HomePage() {
             </div>
 
             {/* Form Side */}
-            <form className="space-y-6 bg-gray-50 dark:bg-[#1E1E1E] p-8 sm:p-10 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl relative overflow-hidden">
+            <form ref={formRef} onSubmit={sendEmail} className="space-y-6 bg-gray-50 dark:bg-[#1E1E1E] p-8 sm:p-10 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl relative overflow-hidden">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <input type="text" placeholder="Name" className="w-full px-5 py-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:text-white" />
-                <input type="email" placeholder="Email" className="w-full px-5 py-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:text-white" />
+                <input type="text" name="from_name" placeholder="Name" required className="w-full px-5 py-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:text-white" />
+                <input type="email" name="reply_to" placeholder="Email" required className="w-full px-5 py-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:text-white" />
               </div>
-              <textarea placeholder="Tell us about your project..." rows={5} className="w-full px-5 py-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:text-white"></textarea>
-              <button className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center space-x-2 group">
-                <span>Send Message</span>
+              <textarea name="message" placeholder="Tell us about your project..." rows={5} required className="w-full px-5 py-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:text-white"></textarea>
+              
+              <button type="submit" disabled={status === "sending"} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center space-x-2 group disabled:opacity-50">
+                <span>{status === "sending" ? "Sending..." : "Send Message"}</span>
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
+
+              {status === "success" && (
+                <p className="text-green-500 text-center font-bold mt-4 animate-bounce">✅ Message Sent Successfully!</p>
+              )}
+              {status === "error" && (
+                <p className="text-red-500 text-center font-bold mt-4">❌ Error. Please try again.</p>
+              )}
             </form>
           </div>
         </div>
