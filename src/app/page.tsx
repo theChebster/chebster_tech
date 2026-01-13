@@ -131,24 +131,28 @@ export default function HomePage() {
 
     if (!formRef.current) return;
 
+    // This pulls the values from your .env.local file or Vercel settings
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    emailjs.sendForm(
-      serviceId, 
-      templateId, 
-      formRef.current,
-      publicKey
-    )
-    .then((result) => {
-      console.log("Email Sent!", result.text);
-      setStatus("success");
-      formRef.current?.reset();
-      setTimeout(() => setStatus(""), 5000);
-    })
-    .catch((error) => {
-      console.error("Email Failed:", error);
+    // Safety check to make sure variables are loading
+    if (!serviceId || !templateId || !publicKey) {
+      console.error("Environment variables are missing!");
       setStatus("error");
-      setTimeout(() => setStatus(""), 5000);
-    });
+      return;
+    }
+
+    emailjs.sendForm(serviceId, templateId, formRef.current, publicKey)
+      .then(() => {
+        setStatus("success");
+        formRef.current?.reset();
+        setTimeout(() => setStatus(""), 5000);
+      })
+      .catch((error) => {
+        console.error("EmailJS Error:", error);
+        setStatus("error");
+      });
   };
 
   return (
