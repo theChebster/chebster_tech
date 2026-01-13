@@ -1,18 +1,11 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "Chebster Tech | Innovative Tech Solutions",
-  description: "Empowering businesses with cutting-edge technology.",
-  icons: {
-    // This points specifically to public/logo.png
-    icon: "/logo.png?v=4", 
-    shortcut: "/logo.png?v=4",
-    apple: "/logo.png?v=4",
-  },
+  title: "Chebster Tech",
+  description: "Innovative Tech Solutions",
+  // We use "apple-touch-icon" and "icon" to cover all browser bases
+  icons: [
+    { rel: "icon", url: "/logo.png" },
+    { rel: "apple-touch-icon", url: "/logo.png" },
+  ],
 };
 
 export default function RootLayout({
