@@ -6,12 +6,12 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Chebster Tech | Innovative Tech Solutions",
-  description: "Empowering businesses with cutting-edge technology. From enterprise web development to secure mobile architectures.",
-  metadataBase: new URL("https://chebstertech.vercel.app"), // Replace with your actual domain
+  description: "Empowering businesses with cutting-edge technology.",
   icons: {
-    icon: "public/logo.png", // This makes your company logo the icon in the browser tab
-    shortcut: "public/logo.png",
-    apple: "public/logo.png",
+    // This points specifically to public/logo.png
+    icon: "/logo.png?v=4", 
+    shortcut: "/logo.png?v=4",
+    apple: "/logo.png?v=4",
   },
 };
 
