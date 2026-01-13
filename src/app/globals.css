@@ -7,17 +7,17 @@
   --foreground: #171717;
 }
 
-/* Logic for your Dark Mode toggle button */
+/* Logic for your manual toggle button */
 .dark {
-  --background: #121212;
-  --foreground: #ededed;
+  --background: #0f172a; /* Tech-friendly dark blue/black */
+  --foreground: #f8fafc;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s ease;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 html {
