@@ -3,7 +3,7 @@ module.exports = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class', 
+  darkMode: 'class', // This is critical for your toggle button to work
   theme: {
     extend: {
       colors: {
