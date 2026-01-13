@@ -124,35 +124,32 @@ export default function HomePage() {
     }
   };
 
-  // EMAIL SENDING FUNCTION
+  // --- UPDATED EMAIL SENDING FUNCTION ---
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
 
     if (!formRef.current) return;
 
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-
-    if (!templateId || !publicKey) {
-      console.error("EmailJS credentials missing from Environment Variables");
-      setStatus("error");
-      return;
-    }
+    // 1. YOUR SETTINGS (PASTE YOUR ACTUAL KEYS HERE)
+    const serviceId = "service_4p7znoi";
+    const templateId = "YOUR_TEMPLATE_ID_HERE"; // Example: "template_abc123"
+    const publicKey = "YOUR_PUBLIC_KEY_HERE";   // Example: "user_XyZ..."
 
     emailjs.sendForm(
-      "service_4p7znoi", 
+      serviceId, 
       templateId, 
       formRef.current,
       publicKey
     )
     .then((result) => {
+      console.log("Email Sent!", result.text);
       setStatus("success");
       formRef.current?.reset();
       setTimeout(() => setStatus(""), 5000);
     })
     .catch((error) => {
-      console.error("Email Error:", error);
+      console.error("Email Failed:", error);
       setStatus("error");
       setTimeout(() => setStatus(""), 5000);
     });
@@ -191,6 +188,19 @@ export default function HomePage() {
           </div>
         </div>
       </header>
+
+      {/* MOBILE MENU */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-white dark:bg-[#121212] pt-24 px-6 md:hidden">
+            <div className="flex flex-col space-y-6">
+                {["Home", "Services", "Team", "About", "Contact"].map((item) => (
+                <button key={item} onClick={() => scrollToSection(item.toLowerCase())} className="text-2xl font-bold text-gray-900 dark:text-gray-100 text-left">
+                    {item}
+                </button>
+                ))}
+            </div>
+        </div>
+      )}
 
       {/* HERO SECTION */}
       <section id="home" className="pt-32 pb-12 sm:pb-20 bg-gray-50 dark:bg-[#1E1E1E] overflow-hidden">
