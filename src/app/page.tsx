@@ -133,8 +133,8 @@ export default function HomePage() {
 
     // 1. YOUR SETTINGS (PASTE YOUR ACTUAL KEYS HERE)
     const serviceId = "service_4p7znoi";
-    const templateId = "YOUR_TEMPLATE_ID_HERE"; // Example: "template_abc123"
-    const publicKey = "YOUR_PUBLIC_KEY_HERE";   // Example: "user_XyZ..."
+    const templateId = "template_pwuvc09"; // Example: "template_abc123"
+    const publicKey = "vgylqdDxKlIZ2HjP9";   // Example: "user_XyZ..."
 
     emailjs.sendForm(
       serviceId, 
