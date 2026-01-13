@@ -9,9 +9,9 @@ export const metadata: Metadata = {
   description: "Empowering businesses with cutting-edge technology. From enterprise web development to secure mobile architectures.",
   metadataBase: new URL("https://chebstertech.vercel.app"), // Replace with your actual domain
   icons: {
-    icon: "/logo.png", // This makes your company logo the icon in the browser tab
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "public/logo.png", // This makes your company logo the icon in the browser tab
+    shortcut: "public/logo.png",
+    apple: "public/logo.png",
   },
 };
 
