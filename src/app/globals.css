@@ -3,11 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Defining blue-500 manually if v4 theme alias is needed */
+  --color-blue-500: #3b82f6; 
 }
 
-/* This allows the "dark" class in your React code to trigger the colors */
+/* This block targets the "dark" class added by your 
+   useEffect in the HomePage component 
+*/
 .dark {
-  --background: #121212; /* Slightly lighter than pure black for better UI */
+  --background: #121212;
   --foreground: #ededed;
 }
 
@@ -18,9 +22,30 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Global resets and transitions */
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  /* Smoothly transition colors when toggling dark mode */
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure smooth scrolling for the scrollToSection function */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for a more modern "Tech" feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 10px;
 }
