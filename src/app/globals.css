@@ -3,14 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  /* Defining blue-500 manually if v4 theme alias is needed */
-  --color-blue-500: #3b82f6; 
 }
 
-/* This block targets the "dark" class added by your 
-   useEffect in the HomePage component 
-*/
-.dark {
+/* Explicitly target the .dark class on the html/root element */
+:root.dark {
   --background: #121212;
   --foreground: #ededed;
 }
@@ -18,34 +14,15 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-/* Global resets and transitions */
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-  /* Smoothly transition colors when toggling dark mode */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
-/* Ensure smooth scrolling for the scrollToSection function */
 html {
   scroll-behavior: smooth;
-}
-
-/* Custom scrollbar for a more modern "Tech" feel */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #3b82f6;
-  border-radius: 10px;
 }
